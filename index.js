@@ -2,23 +2,35 @@ const express = require('express');
 const app = express();
 const port = process.env.PORT || 3000; // use env port for Railway
 
+
 app.use(express.json()); // parse JSON bodies
+
+
 
 // In-memory orders list
 let orders = [
   { id: 1, name: 'Order One', status: 'pending' },
-  { id: 2, name: 'Order Two', status: 'pending' }
+  { id: 2, name: 'Order Two', status: 'completed' },
+  { id: 3, name: 'Order Three', status: 'pending' },
+  { id: 4, name: 'Order Four', status: 'cancelled' },
+  { id: 5, name: 'Order Five', status: 'pending' }
 ];
+
+
 
 // Root route
 app.get('/', (req, res) => {
   res.send('Welcome to my Node.js Orders API!');
 });
 
+
+
 // Get all orders
 app.get('/orders', (req, res) => {
   res.json(orders);
 });
+
+
 
 // Add new order
 app.post('/orders', (req, res) => {
@@ -34,6 +46,8 @@ app.post('/orders', (req, res) => {
   res.status(201).json(newOrder);
 });
 
+
+
 // Delete order by id
 app.delete('/orders/:id', (req, res) => {
   const id = parseInt(req.params.id);
@@ -45,6 +59,8 @@ app.delete('/orders/:id', (req, res) => {
   res.json({ message: 'Order deleted', order: removed[0] });
 });
 
+
+
 // Mark order as complete
 app.put('/orders/:id/complete', (req, res) => {
   const id = parseInt(req.params.id);
@@ -55,6 +71,8 @@ app.put('/orders/:id/complete', (req, res) => {
   order.status = 'complete';
   res.json(order);
 });
+
+
 
 // Start server
 app.listen(port, () => {
